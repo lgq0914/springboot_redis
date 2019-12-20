@@ -62,7 +62,7 @@ public class ConfigService {
                 config = configMapper.selectById(i);
             }
             long endTime = System.currentTimeMillis();
-            System.out.println("程序运行时间：" + (endTime - startTime) + "ms");
+            System.out.println("("+ number + ")"+"直接查询数据库，需要的时间：" + (endTime - startTime) + "ms");
         } catch (Exception e) {
             System.out.println("程序运行出现问题。"+e.getMessage());
         }
@@ -83,7 +83,7 @@ public class ConfigService {
                 config = JacksonUtil.json2pojo(redisTemplateUtil.get("KEY_" + String.valueOf(i)).toString(), Config.class);
             }
             long endTime = System.currentTimeMillis();
-            System.out.println("程序运行时间：" + (endTime - startTime) + "ms");
+            System.out.println("("+ number + ")"+"查询redis，需要的时间：" + (endTime - startTime) + "ms");
         }catch (Exception e){
             System.out.println("程序运行出现问题。"+e.getMessage());
         }

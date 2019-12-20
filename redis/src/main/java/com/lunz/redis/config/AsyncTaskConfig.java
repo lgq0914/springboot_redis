@@ -29,7 +29,7 @@ public class AsyncTaskConfig implements AsyncConfigurer {
     public Executor getAsyncExecutor() {
         ThreadPoolTaskExecutor threadPool = new ThreadPoolTaskExecutor();
         //设置核心线程数
-        threadPool.setCorePoolSize(10);
+        threadPool.setCorePoolSize(100);
         //设置最大线程数
         threadPool.setMaxPoolSize(1000);
         //线程池所使用的缓冲队列

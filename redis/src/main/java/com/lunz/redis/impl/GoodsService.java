@@ -123,24 +123,26 @@ public class GoodsService {
             goods.setName(name);
             //加锁
             long time = System.currentTimeMillis() + 5000;
-/*            int i = 50;
-            boolean lock_goods = false;
-            while (i > 0){
-                //加锁失败 说明有人正在使用
-                lock_goods = redisTemplateUtil.lock("LOCK_GOODS", String.valueOf(time));
-                if(lock_goods){
-                    break;
-                }
-                Thread.sleep(10);
-                i--;
-            }
-            if(!lock_goods){
-                throw new Exception("排队人数太多，请稍后再试...");
-            }*/
+//            int i = 50;
+//            boolean lock_goods = false;
+//            while (i > 0){
+//                //加锁失败 说明有人正在使用
+//                lock_goods = redisTemplateUtil.lock("LOCK_GOODS", String.valueOf(time));
+//                if(lock_goods){
+//                    break;
+//                }
+//                Thread.sleep(10);
+//                i--;
+//            }
+//            if(!lock_goods){
+//                throw new Exception("排队人数太多，请稍后再试...");
+//            }
+
             //加锁失败 说明有人正在使用
             if (!redisTemplateUtil.lock("LOCK_GOODS", String.valueOf(time))) {
                 throw new Exception("排队人数太多，请稍后再试...");
             }
+
             goods = goodsMapper.selectOne(goods);
             Integer amount = goods.getAmount();
             if (amount != null && amount > 0) {
@@ -148,13 +150,14 @@ public class GoodsService {
                 goodsMapper.updateById(goods);
                 Thread.sleep(100);
                 System.out.println("线程：" + Thread.currentThread().getName() + "恭喜你，抢到了！剩余：" + amount);
-                //解锁
-                redisTemplateUtil.unlock("LOCK_GOODS", String.valueOf(time));
+
             } else {
                 System.out.println("线程：" + Thread.currentThread().getName() + "抢购结束！");
             }
+            //解锁
+            redisTemplateUtil.unlock("LOCK_GOODS", String.valueOf(time));
         } catch (Exception e) {
-            System.out.println("线程：" + Thread.currentThread().getName());
+            System.out.println("线程：" + Thread.currentThread().getName() + e.getMessage());
         }
 
     }
@@ -194,23 +197,23 @@ public class GoodsService {
             //加锁
             long time = System.currentTimeMillis() + 5000;
 
-//            //加锁失败 说明有人正在使用
-//            if (!redisTemplateUtil.lock("LOCK_"+name, String.valueOf(time))) {
+//            int i = 50;
+//            boolean lock_goods = false;
+//            while (i > 0){
+//                //加锁失败 说明有人正在使用
+//                lock_goods = redisTemplateUtil.lock("LOCK_"+name, String.valueOf(time));
+//                if(lock_goods){
+//                    break;
+//                }
+//                Thread.sleep(10);
+//                i--;
+//            }
+//            if(!lock_goods){
 //                throw new Exception("排队人数太多，请稍后再试...");
 //            }
 
-            int i = 50;
-            boolean lock_goods = false;
-            while (i > 0){
-                //加锁失败 说明有人正在使用
-                lock_goods = redisTemplateUtil.lock("LOCK_"+name, String.valueOf(time));
-                if(lock_goods){
-                    break;
-                }
-                Thread.sleep(10);
-                i--;
-            }
-            if(!lock_goods){
+            //加锁失败 说明有人正在使用
+            if (!redisTemplateUtil.lock("LOCK_"+name, String.valueOf(time))) {
                 throw new Exception("排队人数太多，请稍后再试...");
             }
 
@@ -219,8 +222,7 @@ public class GoodsService {
                 redisTemplateUtil.set(name,--amount);
                 Thread.sleep(10);
                 System.out.println("线程：" + Thread.currentThread().getName() + "恭喜你，抢到了！剩余：" + amount);
-                //解锁
-                redisTemplateUtil.unlock("LOCK_"+name, String.valueOf(time));
+
             }else{
                 System.out.println("线程：" + Thread.currentThread().getName() + "抢购结束！");
                 Goods goods = new Goods();
@@ -229,6 +231,8 @@ public class GoodsService {
                 goods.setAmount(0);
                 goodsMapper.updateById(goods);
             }
+            //解锁
+            redisTemplateUtil.unlock("LOCK_"+name, String.valueOf(time));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

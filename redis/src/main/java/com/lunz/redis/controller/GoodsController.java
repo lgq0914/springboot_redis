@@ -27,12 +27,23 @@ public class GoodsController {
         goodsService.addGoods(name);
     }
 
+
     /**
-     * redis锁的形式抢购商品
+     * 直接抢购商品
      * @param name
      */
     @GetMapping("/buyGoods/{name}")
     public void buyGoods(@PathVariable String name){
+        goodsService.subtractGoods(name);
+    }
+
+
+    /**
+     * 锁的形式抢购商品
+     * @param name
+     */
+    @GetMapping("/buyGoodsLock/{name}")
+    public void buyGoodsLock(@PathVariable String name){
         goodsService.subtractGoodsLock(name);
     }
 
