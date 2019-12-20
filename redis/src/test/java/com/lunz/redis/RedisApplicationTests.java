@@ -66,5 +66,5 @@ class RedisApplicationTests {
             goodsService.subtractGoodsAsync("iphone20");
         }
     }
-    
+
 }
