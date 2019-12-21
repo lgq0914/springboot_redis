@@ -2,7 +2,7 @@
 
 ID作为一条数据的唯一标识，必须准确，所以我们将ID放到了数据库中。
 
-![image-20191217155141079](redis/12.23分享/image-20191217155141079.png)
+![image-20191217155141079](https://github.com/Lunzqd/springboot_redis/blob/master/12.23%E5%88%86%E4%BA%AB/image-20191217155141079.png)
 
 使用数据库函数来尽量避免获取到重复的ID
 
