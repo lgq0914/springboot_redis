@@ -2,15 +2,15 @@
 
 ID作为一条数据的唯一标识，必须准确，所以我们将ID放到了数据库中。
 
-![image-20191217155141079](https://github.com/Lunzqd/springboot_redis/blob/master/12.23%E5%88%86%E4%BA%AB/image-20191217155141079.png)
+![image-20191217155141079](https://github.com/Lunzqd/springboot_redis/blob/master/12.23分享/image-20191217155141079.png)
 
 使用数据库函数来尽量避免获取到重复的ID
 
 ![image-20191217160835690](https://github.com/Lunzqd/springboot_redis/blob/master/12.23分享/image-20191217160835690.png)
 
-![image-20191217160706482](redis/12.23分享/image-20191217160706482.png)
+![image-20191217160706482](https://github.com/Lunzqd/springboot_redis/blob/master/12.23分享/image-20191217160706482.png)
 
-![image-20191217161619274](redis/12.23分享/image-20191217161619274.png)
+![image-20191217161619274](https://github.com/Lunzqd/springboot_redis/blob/master/12.23分享/image-20191217161619274.png)
 
 ​	我们能够从中发现规律，ID是递减的，这样就出现一个问题，如果前端没有对URL限制，可以通过改URL中的ID获取信息，这样显然是不对的。
 
@@ -30,7 +30,7 @@ http://czpt.kuduhz.lunztech.cn/urlStr
 
 但是总觉得麻烦... 为了发扬程序员的优良特性“懒”，可以使用ID加随机数来避免这个问题。
 
-![image-20191217163208814](redis/12.23分享/image-20191217163208814.png)
+![image-20191217163208814](https://github.com/Lunzqd/springboot_redis/blob/master/12.23分享/image-20191217163208814.png)
 
 
 
@@ -148,9 +148,9 @@ spring.redis.database=0
     }
 ```
 
-![image-20191218170903313](redis/12.23分享/image-20191218170903313.png)
+![image-20191218170903313](https://github.com/Lunzqd/springboot_redis/blob/master/12.23分享/image-20191218170903313.png)
 
-![image-20191218171003484](redis/12.23分享/image-20191218171003484.png)
+![image-20191218171003484](https://github.com/Lunzqd/springboot_redis/blob/master/12.23分享/image-20191218171003484.png)
 
 ​	一般做的操作就是先去查redis，有没有需要的数据，有的话直接返回，没有就去数据库查询，查出数据后保存到redis中。
 
@@ -164,27 +164,27 @@ spring.redis.database=0
 
 两种方式查询500、5000条数据
 
-![image-20191220214818389](redis/12.23分享/image-20191220214818389.png)
+![image-20191220214818389](https://github.com/Lunzqd/springboot_redis/blob/master/12.23分享/image-20191220214818389.png)
 
 
 
-![image-20191220215011530](redis/12.23分享/image-20191220215011530.png)
+![image-20191220215011530](https://github.com/Lunzqd/springboot_redis/blob/master/12.23分享/image-20191220215011530.png)
 
 
 
-![image-20191220214603379](redis/12.23分享/image-20191220214603379.png)
+![image-20191220214603379](https://github.com/Lunzqd/springboot_redis/blob/master/12.23分享/image-20191220214603379.png)
 
 
 
-![image-20191220214641740](redis/12.23分享/image-20191220214641740.png)
+![image-20191220214641740](https://github.com/Lunzqd/springboot_redis/blob/master/12.23分享/image-20191220214641740.png)
 
 
 
-![image-20191220220551928](redis/12.23分享/image-20191220220551928.png)
+![image-20191220220551928](https://github.com/Lunzqd/springboot_redis/blob/master/12.23分享/image-20191220220551928.png)
 
 
 
-![image-20191220220631299](redis/12.23分享/image-20191220220631299.png)
+![image-20191220220631299](https://github.com/Lunzqd/springboot_redis/blob/master/12.23分享/image-20191220220631299.png)
 
 
 
@@ -192,27 +192,27 @@ spring.redis.database=0
 
 直接查询数据库（没有加锁的情况）
 
-![image-20191220221600136](redis/12.23分享/image-20191220221600136.png)
+![image-20191220221600136](https://github.com/Lunzqd/springboot_redis/blob/master/12.23分享/image-20191220221600136.png)
 
-![image-20191220223756509](redis/12.23分享/image-20191220223756509.png)
+![image-20191220223756509](https://github.com/Lunzqd/springboot_redis/blob/master/12.23分享/image-20191220223756509.png)
 
 
 
 使用锁
 
-![image-20191220223936336](redis/12.23分享/image-20191220223936336.png)
+![image-20191220223936336](https://github.com/Lunzqd/springboot_redis/blob/master/12.23分享/image-20191220223936336.png)
 
-![image-20191220224021540](redis/12.23分享/image-20191220224021540.png)
+![image-20191220224021540](https://github.com/Lunzqd/springboot_redis/blob/master/12.23分享/image-20191220224021540.png)
 
 将商品数量保存在redis中
 
-![image-20191220224121919](redis/12.23分享/image-20191220224121919.png)
+![image-20191220224121919](https://github.com/Lunzqd/springboot_redis/blob/master/12.23分享/image-20191220224121919.png)
 
 将商品数量保存在redis，并使用锁
 
-![image-20191220224433239](redis/12.23分享/image-20191220224433239.png)
+![image-20191220224433239](https://github.com/Lunzqd/springboot_redis/blob/master/12.23分享/image-20191220224433239.png)
 
-![image-20191220224540058](redis/12.23分享/image-20191220224540058.png)
+![image-20191220224540058](https://github.com/Lunzqd/springboot_redis/blob/master/12.23分享/image-20191220224540058.png)
 
 
 
@@ -233,7 +233,7 @@ spring.redis.database=0
 </dependency>
 ```
 
-![image-20191217172653485](redis/12.23分享/image-20191217172653485.png)
+![image-20191217172653485](https://github.com/Lunzqd/springboot_redis/blob/master/12.23分享/image-20191217172653485.png)
 
 ```json
 {
