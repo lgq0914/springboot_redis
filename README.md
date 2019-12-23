@@ -34,15 +34,6 @@ http://czpt.kuduhz.lunztech.cn/urlStr
 
 
 
-rm-bp1oydriw2vi7fc68qo.mysql.rds.aliyuncs.com
-
-user_saas
-
-Lunz2017
-
-
-
-
 
 ### 二： 银保贷saas项目中配置数据库的使用
 
