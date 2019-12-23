@@ -12,7 +12,7 @@ ID作为一条数据的唯一标识，必须准确，所以我们将ID放到了�
 
 ![image-20191217161619274](https://github.com/Lunzqd/springboot_redis/blob/master/12.23分享/image-20191217161619274.png)
 
-​	我们能够从中发现规律，ID是递减的，这样就出现一个问题，如果前端没有对URL限制，可以通过改URL中的ID获取信息，这样显然是不对的。
+​	我们能够从中发现规律，ID是递减的，这样就出现一个问题，如果前端没有对URL限制，可以通过改URL中的ID获取信息甚至是修改那些本没有权限的数据，这样显然是不对的。
 
 （admin，123）
 
@@ -34,9 +34,19 @@ http://czpt.kuduhz.lunztech.cn/urlStr
 
 
 
+rm-bp1oydriw2vi7fc68qo.mysql.rds.aliyuncs.com
+
+user_saas
+
+Lunz2017
+
+
+
+
+
 ### 二： 银保贷saas项目中配置数据库的使用
 
-​	系统中肯定需要一些基础的配置信息，比如下拉框的内容、为了定制化开发做的一些配置、一些功能的开关等，这些配置一般情况是不会变动的，但是这些配置会大量的使用，一直查询数据库会造成一些性能问题，我们可以把这些数据存储到redis中。
+​	系统中肯定需要一些基础的配置信息，比如一些功能的开关、为了定制化开发做的一些配置、下拉框的内容等，这些配置一般情况是不会变动的，但是这些配置会大量的使用，一直去数据库查询可能会造成一些性能问题，我们可以把这些数据存储到redis中。
 
 ##### 1. redis是啥？
 
@@ -56,13 +66,56 @@ http://czpt.kuduhz.lunztech.cn/urlStr
 
 ​	最常用的就是set get。
 
-​	对string类型的操作：set stringKey stringValue;     get stringKey;
+​	对string类型的操作：set strKey strValue;     get strKey;
 
-​	对hash类型的操作：set hashKey key1 value1;       get hashKey key1;
+​	对hash类型的操作：hset hashKey       key1        value1;       hget hashKey key1;
 
-​	设置过期时间：expipe stringKey 100;
+​										hset hash的key   项的key   项的value
 
-​	
+设置过期时间：expire strKey 600;
+
+<img src="https://github.com/Lunzqd/springboot_redis/blob/master/12.23分享/image-20191223112656522.png" alt="image-20191223112656522"  />
+
+
+
+```shell
+PS C:\Program Files\Redis> redis-cli -h 192.168.2.19 -p 6379
+
+192.168.2.19:6379> SELECT 3
+OK
+
+192.168.2.19:6379[3]> set strKey strValue
+OK
+192.168.2.19:6379[3]> get strKey
+"strValue"
+192.168.2.19:6379[3]> del strKey
+(integer) 1
+
+
+192.168.2.19:6379[3]> HMSET hashKey key1 value1 key2 value2
+OK
+192.168.2.19:6379[3]> HGET hashKey key1
+"value1"
+192.168.2.19:6379[3]> HGET hashKey key2
+"value2"
+192.168.2.19:6379[3]> HDEL hashKey key1
+(integer) 1
+192.168.2.19:6379[3]>192.168.2.19:6379[3]> del hashKey
+(integer) 1
+
+
+192.168.2.19:6379[3]> LPUSH listKey v1 v2 v3
+(integer) 3
+192.168.2.19:6379[3]> LRANGE listKey 0 2
+1) "v3"
+2) "v2"
+3) "v1"
+192.168.2.19:6379[3]> del listKey
+(integer) 1
+
+```
+
+
 
 ​	maven依赖
 
@@ -198,7 +251,7 @@ spring.redis.database=0
 
 
 
-使用锁
+使用redis锁
 
 ![image-20191220223936336](https://github.com/Lunzqd/springboot_redis/blob/master/12.23分享/image-20191220223936336.png)
 
@@ -233,6 +286,26 @@ spring.redis.database=0
 </dependency>
 ```
 
+
+
+```xml
+
+```
+
+```xml
+management.endpoints.web.exposure.include= *
+management.endpoint.health.show-details=always
+#各种配置的使用
+
+management.health.redis.enabled=false
+management.health.db.enabled=false
+management.health.rabbit.enabled=false
+```
+
+
+
+http://localhost:8887/actuator/health
+
 ![image-20191217172653485](https://github.com/Lunzqd/springboot_redis/blob/master/12.23分享/image-20191217172653485.png)
 
 ```json
@@ -264,6 +337,8 @@ spring.redis.database=0
 
 ##### 2.dubbo spring boot actuator
 
+
+
 ```xml
 <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -276,15 +351,13 @@ spring.redis.database=0
 </dependency>
 ```
 
-```xml
-management.endpoints.web.exposure.include= *
-management.endpoint.health.show-details=always
-#各种配置的使用
 
-management.health.redis.enabled=false
-management.health.db.enabled=false
-management.health.rabbit.enabled=false
-```
+
+http://192.168.6.63:8063/actuator/health   loan
+
+http://192.168.6.63:8066/actuator/health   config
+
+
 
 ```json
 {

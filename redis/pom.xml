@@ -42,6 +42,11 @@
             <version>2.1.5.RELEASE</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
         <!--阿里json处理包-->
         <dependency>
             <groupId>com.alibaba</groupId>
